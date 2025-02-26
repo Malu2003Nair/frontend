@@ -1,67 +1,40 @@
-import { useState } from "react";
-import axios from "axios";
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
-    // State to store email, password, and error messages
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        try {
-            // Call the backend API for login
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, { email, password });
-
-            // Store JWT token in localStorage
-            localStorage.setItem("token", res.data.token);
-
-            // Redirect to dashboard
-            window.location.href = "/dashboard";
-        } catch (err) {
-            setError("Invalid credentials. Please try again.");
-        }
-    };
-
-    return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-            <h1 className="text-2xl font-bold mb-4">Welcome to Student Portal</h1>
-
-            {/* Existing Content - Keep your existing structure */}
-            <p className="text-gray-600">Manage your profile and applications here.</p>
-
-            {/* Login Form */}
-            <form onSubmit={handleLogin} className="mt-6 p-6 bg-white shadow-md rounded-md w-80">
-                <h2 className="text-xl font-semibold">Login</h2>
-                {error && <p className="text-red-500">{error}</p>}
-
-                <input 
-                    type="email" 
-                    placeholder="Email" 
-                    className="w-full p-2 border my-2" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    required 
-                />
-
-                <input 
-                    type="password" 
-                    placeholder="Password" 
-                    className="w-full p-2 border my-2" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
-                    required 
-                />
-
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded w-full">
-                    Login
-                </button>
-
-                <p className="mt-2">
-                    Don't have an account? 
-                    <a href="/register" className="text-blue-500"> Register</a>
-                </p>
-            </form>
+  return (
+    <div className="min-h-screen flex flex-col">
+      <header className="bg-gray-100 p-4">
+        <nav className="container mx-auto">
+          <Link href="/" className="font-bold text-xl">Student App</Link>
+          <div className="flex space-x-4 mt-2">
+            <Link href="/register" className="text-blue-500 hover:underline">Register</Link>
+            <Link href="/login" className="text-blue-500 hover:underline">Login</Link>
+          </div>
+        </nav>
+      </header>
+      <main className="flex-grow flex flex-col items-center justify-center">
+        <div className="container mx-auto text-center">
+          <h1 className="text-4xl font-bold mb-4">Welcome to Student Connect</h1>
+          <p className="text-lg mb-8">Connect with students and explore opportunities.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="relative h-64">
+              <Image src="/images/student1.jpg" alt="Student 1" layout="fill" objectFit="cover" className="rounded-lg" />
+            </div>
+            <div className="relative h-64">
+              <Image src="/images/student2.jpg" alt="Student 2" layout="fill" objectFit="cover" className="rounded-lg" />
+            </div>
+          </div>
+          <div className="mt-8">
+            <Link href="/register" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Get Started
+            </Link>
+          </div>
         </div>
-    );
+      </main>
+      <footer className="bg-gray-200 p-4 text-center">
+        <p>&copy; {new Date().getFullYear()} Student App</p>
+      </footer>
+    </div>
+  );
 }
